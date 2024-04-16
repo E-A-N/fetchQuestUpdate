@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+
+<html>
+
+    <head>
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="@ant_pixel" />
+        <meta name="description" content="A magical isometric bullethell!" />
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyA96PDr1xRCeXePmr48HQ3UVeF4SkxL1jQ",
+            authDomain: "fetch-quest-data.firebaseapp.com",
+            databaseURL: "https://fetch-quest-data.firebaseio.com",
+            projectId: "fetch-quest-data",
+            storageBucket: "fetch-quest-data.appspot.com",
+            messagingSenderId: "930118833541",
+            appId: "1:930118833541:web:b3059c121ff6c3d25860ec",
+            measurementId: "G-MN1XZZCZFF"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        </script>
+
+        <script type="text/javascript" src="js/frontend/db.js"> </script>
+        <!-- <script type="text/javascript" src="tools/specialPing.js"> </script> -->
+        <script type="text/javascript" src="lib/phaser.min.js"></script>
+        <script type="text/javascript" src="config/config.js"></script>
+        <script type="text/javascript" src="config/mobileGUI.js"></script>
+        <script type="text/javascript" src="config/particles.js"></script>
+        <script type="text/javascript" src="config/spawnData.js"></script>
+
+        <!-- Game Tools -->
+        <script type="text/javascript" src="js/tools/gridSystem.js"></script>
+        <script type="text/javascript" src="js/tools/spawnManger.js"></script>
+        <script type="text/javascript" src="js/tools/mobileControls.js"></script>
+        <script type="text/javascript" src="js/tools/fireball.js"></script>
+        <script type="text/javascript" src="js/tools/firefly.js"></script>
+        <script type="text/javascript" src="js/tools/particleRise.js"></script>
+
+        <!-- Phaser Game States -->
+        <script type="text/javascript" src="js/boot.js"></script>
+        <script type="text/javascript" src="js/load.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>
+        <script type="text/javascript" src="js/level1.js"></script>
+        <script type="text/javascript" src="js/scoreMenu.js"></script>
+
+        <!-- Game State Manager -->
+        <script type="text/javascript" src="js/stateManager.js"></script>
+
+
+        <link rel="stylesheet" href="css/style.css">
+
+        <title> Fetch Quest </title>
+
+    </head>
+
+    <body>
+
+        <div id="gameContainer"></div>
+    </body>
+
+</html>

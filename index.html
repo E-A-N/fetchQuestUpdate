@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Fetch Quest!</title>
+  <link rel="stylesheet" href="app.css">
+
+</head>
+<body>
+    Fetch Quest by Ant Pixel GameDev
+    <script>
+        //redirect to public directory with query string
+        var query = new URLSearchParams(window.location.search).toString();
+        window.location.href = "https://Ant-Pixel.github.io/fetchQuest/client/index.html" +"?"+ query.toString();
+    </script>
+</body>

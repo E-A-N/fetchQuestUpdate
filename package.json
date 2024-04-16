@@ -1,0 +1,12 @@
+{
+  "name": "fetchQuest",
+  "version": "1.0.0",
+  "description": "A template for making phaser games",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
