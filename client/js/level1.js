@@ -3,6 +3,7 @@ let level1State = {}
 
 level1State.init = (playerData) => {
 	level1State.playerInfo = {};
+	level1State.allowedToMove = true;
 	if (playerData.loggedIn){
 		level1State.playerInfo = playerData;
 	}
@@ -543,7 +544,7 @@ level1State.playerInteraction = (occupant) => {
 }
 
 level1State.updatePlayer = (player) => {
-	if (player.destroyed){
+	if (player.destroyed || level1State.gameHasEnded){
 		return;
 	}
 	let myPanel = player.currentPanel;
@@ -577,31 +578,34 @@ level1State.updatePlayer = (player) => {
 	let cursors = level1State.cursors;
 	let wasd = level1State.wasd;
 
-	if (cursors.left.isDown || player.inputs.left || wasd.left.isDown)
-    {
-		gs.moveOccupantPanelDirection(player, "left", level1State.changeDepth);
-		player.inputs.left = false;
-		inputOccured = true;
-		player.sprite.scale.x = -player.oScaleX;
-    }
-    else if (cursors.right.isDown || player.inputs.right || wasd.right.isDown)
-    {
-		gs.moveOccupantPanelDirection(player, "right", level1State.changeDepth);
-		player.inputs.right = false;
-		inputOccured = true;
-		player.sprite.scale.x = player.oScaleX;
-	}
-	else if (cursors.up.isDown || player.inputs.up || wasd.up.isDown)
-    {
-		gs.moveOccupantPanelDirection(player, "up", level1State.changeDepth);
-		player.inputs.up = false;
-		inputOccured = true;
-	}
-	else if (cursors.down.isDown || player.inputs.down || wasd.down.isDown)
-    {
-		gs.moveOccupantPanelDirection(player, "down", level1State.changeDepth);
-		player.inputs.down = false;
-		inputOccured = true;
+	if (level1State.allowedToMove) {
+
+		if (cursors.left.isDown || player.inputs.left || wasd.left.isDown)
+		{
+			gs.moveOccupantPanelDirection(player, "left", level1State.changeDepth);
+			player.inputs.left = false;
+			inputOccured = true;
+			player.sprite.scale.x = -player.oScaleX;
+		}
+		else if (cursors.right.isDown || player.inputs.right || wasd.right.isDown)
+		{
+			gs.moveOccupantPanelDirection(player, "right", level1State.changeDepth);
+			player.inputs.right = false;
+			inputOccured = true;
+			player.sprite.scale.x = player.oScaleX;
+		}
+		else if (cursors.up.isDown || player.inputs.up || wasd.up.isDown)
+		{
+			gs.moveOccupantPanelDirection(player, "up", level1State.changeDepth);
+			player.inputs.up = false;
+			inputOccured = true;
+		}
+		else if (cursors.down.isDown || player.inputs.down || wasd.down.isDown)
+		{
+			gs.moveOccupantPanelDirection(player, "down", level1State.changeDepth);
+			player.inputs.down = false;
+			inputOccured = true;
+		}
 	}
 	
 	if (inputOccured && level1State.guides.autoFade){
@@ -637,9 +641,11 @@ level1State.debugRender = () => {
 }
 
 level1State.gameOver = () => {
-	level1State.player.destroy();
+	// level1State.player.destroy();
 	level1State.combo.break();
 	level1State.backgroundMusic.stop();
+	level1State.gameHasEnded = true;
+	level1State.allowedToMove = false;
 	let defaultName = "random apprentice";
 	let whenScoreIsSet = () => {
 		let entryModel = {
@@ -654,13 +660,40 @@ level1State.gameOver = () => {
 			game.state.start('scoreMenu', true, false, level1State.playerInfo);
 		});
 	};
+	
+	level1State.characterDeathAni(() => {
 
-	if (level1State.playerInfo.loggedIn){
-		setUserScore(level1State.playerInfo.name, level1State.score.value, whenScoreIsSet);
-	}
-	else {
-		setUserScore(defaultName, level1State.score.value, whenScoreIsSet);
-	};
+		if (level1State.playerInfo.loggedIn){
+			setUserScore(level1State.playerInfo.name, level1State.score.value, whenScoreIsSet);
+		}
+		else {
+			setUserScore(defaultName, level1State.score.value, whenScoreIsSet);
+		};
+	})
+}
+
+level1State.characterDeathAni = (call) => {
+	let player = level1State.player;
+	var flashTween = game.add.tween(player.sprite);
+    
+    // Set the alpha to 0 (invisible) at the beginning
+    // player.sprite.alpha = 0;
+
+    // Define the flashing animation
+    flashTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 7)  // Fade in
+            
+
+    // Start the flashing animation after a delay of 0.5 seconds
+    // flashTween.delay(500);
+
+    // Set a callback function to be called when the tween completes
+    flashTween.onComplete.add(function() {
+        // Callback function to execute after the flashing effect is over
+        call();
+    }, game);
+
+    // Start the flashing animation
+    flashTween.start();
 }
 
 level1State.drawGuide = (state, mobile) => {
