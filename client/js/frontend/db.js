@@ -22,18 +22,15 @@ let emailCleaner = (email, reverse = false) => {
     return email;
 }
 
-let setUserScore = (name, email, score, call) => {
-    email = emailCleaner(email);
-    firebase.database()
-        .ref("Users/" + email)
-        .set({
-            name: name,
-            score: score
-        }, () => {
-            if (typeof call === "function"){
-                call()
-            }
-        });
+let persistenceIsAvailable = () => {
+    return false;
+}
+
+let setUserScore = (name, score, call) => {
+    call();
+    if (!persistenceIsAvailable()){
+    
+    }
 };
 
 let getUser = (user, call) => {
@@ -52,30 +49,16 @@ let getUser = (user, call) => {
 }
 
 let getDailyTopScores = (call) => {
-    firebase.database().ref("DailyHighScores/").once("value", (snapshot) => {
-        let scores = [];
-        snapshot.forEach((childSnapShot) => {
-            let childKey  = childSnapShot.key;
-            let childData = childSnapShot.val();
-            
-            //do things with the data retrieved from here
-            scores.push([childKey, childData]);
-        })
-
-        if (typeof call === "function"){
-            call(scores);
-        };
-    })
+    call(DefaultHighScores.DefaultDailyHighScores);
 }
 
 
 let submitNewEntryForTopScore = (newEntry, call) => {
     //[4, {email: "testyATtestDOTcom", name: "TREX!", score: 1111}]
-    newEntry[1].email = emailCleaner(newEntry[1].email);
-    getDailyTopScores((scores) => {
-        let newScores = compareTopScores(scores, newEntry);
-        setDailyTopScores(newScores, call);
-    })
+    console.log("new entry is:", newEntry);
+    if (call){
+        call();
+    }
 }
 
 let compareTopScores = (scores, newEntry) => {
@@ -91,22 +74,6 @@ let compareTopScores = (scores, newEntry) => {
     return scores;
 }
 
-let setDailyTopScores = (scores, call) => {
-    scores.forEach((score)=>{
-        firebase.database()
-            .ref("DailyHighScores/" + score[0])
-            .set({
-                email: score[1].email,
-                name: score[1].name,
-                score: score[1].score
-            }, () => {
-                console.log("Top scores are set!")
-                if (typeof call === "function"){
-                    call(scores);
-                };
-            });
-    })  
-};
 
 let getData = (parent, child, call) => {
     child  = child || "";
@@ -124,17 +91,62 @@ let getData = (parent, child, call) => {
     })
 }
 
-let updatePageViews = () => {
-    let query = "Pageviews";
-    let db = firebase.database();
-    db.ref(query)
-        .once('value')
-        .then((Pageviews) => {      
-            let dbKey = db.ref(query)
-            dbKey.set({
-                count: Pageviews.val().count + 1,
-            })
-        })
-}
 
-updatePageViews();
+let DefaultHighScores = {
+    "DailyHighScores":[
+       {
+          "name":"The Master",
+          "score":5000,
+          "email": "testyATtestDOTcom"
+
+       },
+       {
+          "name":"The Profressional",
+          "score":4000,
+          "email": "testyATtestDOTcom"
+       },
+       {
+          "name":"The Associate",
+          "score":3000,
+          "email": "testyATtestDOTcom"
+       },
+       {
+          "name":"The Intern",
+          "score":2000,
+          "email": "testyATtestDOTcom"
+       },
+       {
+          "name":"The Apprentice",
+          "score":1000,
+          "email": "testyATtestDOTcom"
+       }
+    ],
+    "DefaultDailyHighScores":[
+        {
+            "name":"The Master",
+            "score":5000,
+            "email": "testyATtestDOTcom"
+  
+         },
+         {
+            "name":"The Profressional",
+            "score":4000,
+            "email": "testyATtestDOTcom"
+         },
+         {
+            "name":"The Associate",
+            "score":3000,
+            "email": "testyATtestDOTcom"
+         },
+         {
+            "name":"The Intern",
+            "score":2000,
+            "email": "testyATtestDOTcom"
+         },
+         {
+            "name":"The Apprentice",
+            "score":1000,
+            "email": "testyATtestDOTcom"
+         }
+    ]
+ }

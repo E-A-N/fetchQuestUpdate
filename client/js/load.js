@@ -11,7 +11,7 @@ loadState.loadAudio = () => {
 
 loadState.preload = () => {
     
-    loadState.discordLogo = loadState.createDiscordLogo();
+    // loadState.discordLogo = loadState.createDiscordLogo();
 
     loadState.createLoadingLamp();
     game.load.onFileComplete.add(loadState.onFileLoaded, loadState);

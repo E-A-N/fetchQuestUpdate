@@ -352,7 +352,7 @@ level1State.addPlayerOccupant = (gs, row, col, playerConfig) => {
 		onPanel: null,
 		shadow: null,
 		inputs: inputs,
-		coolDownModifier: 0.25,
+		coolDownModifier: 0.15,
 		canMove: true,
 		destroyed: false
 	}
@@ -641,10 +641,8 @@ level1State.gameOver = () => {
 	level1State.combo.break();
 	level1State.backgroundMusic.stop();
 	let defaultName = "random apprentice";
-	let defaultEmail = "apprentice";
 	let whenScoreIsSet = () => {
 		let entryModel = {
-			email: level1State.playerInfo.email || defaultEmail,
 			name: level1State.playerInfo.name,
 			score: level1State.score.value,
 		}
@@ -658,10 +656,10 @@ level1State.gameOver = () => {
 	};
 
 	if (level1State.playerInfo.loggedIn){
-		setUserScore(level1State.playerInfo.name, level1State.playerInfo.email, level1State.score.value, whenScoreIsSet);
+		setUserScore(level1State.playerInfo.name, level1State.score.value, whenScoreIsSet);
 	}
 	else {
-		setUserScore(defaultName, defaultEmail, level1State.score.value, whenScoreIsSet);
+		setUserScore(defaultName, level1State.score.value, whenScoreIsSet);
 	};
 }
 

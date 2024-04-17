@@ -2,9 +2,11 @@ let menuState = {}
 menuState.canProceed = false;
 menuState.playerInfo = {};
 menuState.init = (auth) => {
+	menuState.canProceed = true;
+	return //eandebugtest
 	if (typeof auth !== "undefined" && auth !== null){
 		if (auth.hasOwnProperty("access_token")){
-			menuState.getDiscordInfo(auth);
+			// menuState.getDiscordInfo(auth);
 		}
 		else if (auth.loggedIn){
 			menuState.canProceed = true;
@@ -57,7 +59,7 @@ menuState.create = () => {
 	
 	ParticleRise(game, 1, 1);
 	menuState.createEntryLogo();
-	menuState.discordLogo = menuState.createDiscordLogo();
+	// menuState.discordLogo = menuState.createDiscordLogo();
 	
 
 	//
@@ -85,6 +87,11 @@ menuState.createEntryLogo = () => {
 	let clickSound = game.add.audio(...magicBookSfx);
 	logo.events.onInputDown.add(() => {
 		//update database
+		menuState.fadeOut(menuState, () => {
+			menuState.showTutorial();
+			logo.inputEnabled = false;
+		});
+		return //eandebug
 		if (menuState.canProceed) {
 			let query = "GameData";
 			let db = firebase.database();
@@ -157,41 +164,6 @@ menuState.createDiscordLogo = () => {
 	});
 
 	return disLogo;
-};
-
-menuState.getDiscordInfo = (auth) => {
-	let discordURL = "https://discordapp.com/api/users/@me";
-	async function getData(url = '', data = {}) {
-		// Default options are marked with *
-
-		let requestParams = {
-			method: 'GET',
-			headers: {
-				//'Content-Type': 'application/json',
-				"Authorization": `Bearer ${auth.access_token}`
-			},
-		};
-
-		const response = await fetch(url, requestParams);
-		return response.json(); // parses JSON response into native JavaScript objects
-	}
-  
-	getData(discordURL)
-		.then(data => {
-			 // JSON data parsed by `data.json()` call
-			menuState.playerInfo = data;
-			menuState.playerInfo.name = data.username;
-			menuState.playerInfo.email = data.email;
-			menuState.playerInfo.loggedIn = true
-			menuState.canProceed = true;
-
-			menuState.greetPlayer(data.username, true);
-		})
-		.catch((error) => {
-			console.log("Error: ", error)
-			menuState.canProceed = true;
-			menuState.playerInfo.loggedIn = false;
-		})
 };
 
 menuState.fadeOut = (state, call) => {
