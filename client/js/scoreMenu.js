@@ -29,9 +29,7 @@ scoreMenuState.createTopScoreDisplay = (scores) => {
     header.tint = config.default.graphics.themeTint;
     container.add(header);
     //game only has room for 30 characters
-    console.log("scores are:", scores)
     scores.forEach((score, index) => {
-        console.log("eandebug single score is:", score);
         let renderData = [
             0,
             (header.height * 3) + yOffset * index,

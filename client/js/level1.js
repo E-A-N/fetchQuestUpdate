@@ -49,6 +49,14 @@ level1State.create = () => {
 	];
 	level1State.fireballSound = game.add.audio(...fireSfx);
 
+
+	let deathCrySfx = [
+		config.default.audio.game.deathCry1.key,
+		config.default.audio.settings.volume,
+		false
+	];
+	level1State.deathCry = game.add.audio(...deathCrySfx);
+
 	level1State.cursors = game.input.keyboard.createCursorKeys();
 	level1State.wasd = {
 		up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -558,6 +566,7 @@ level1State.updatePlayer = (player) => {
 
 	if (myPanelIsHot){
 		console.log("Burned!");
+		level1State.deathCry.play();
 		level1State.fireballSound.play();
 		level1State.gameOver();
 		return;

@@ -92,6 +92,10 @@ config.default.audio.game = {
         src: "assets/audio/bookLand1.ogg",
         key: "bookLand"
     },
+    deathCry1: {
+        src: "assets/audio/funnyYellEdit.mp3",
+        key: "deathCry1"
+    }
 };
 
 config.loadState = {
